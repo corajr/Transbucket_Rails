@@ -29,6 +29,9 @@ jobs:
   test:
     docker:
       - image: circleci/ruby:2.3.3
+        environment:
+          TEST_DB: circle_test
+          RAILS_ENV: test
       - image: circleci/postgres:9.6-alpine
         environment:
           POSTGRES_USER: postgres
@@ -47,9 +50,9 @@ jobs:
       - run:
           name: Wait for db
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run: RAILS_ENV=test bundle exec rake db:create
-      - run: RAILS_ENV=test bundle exec rake db:migrate
-      - run: RAILS_ENV=test bundle exec rspec
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:migrate
+      - run: bundle exec rspec
 
 workflows:
   version: 2
