@@ -13,3 +13,18 @@ jobs:
           name: Which bundler?
           command: bundle -v
       - ruby/bundle-install
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:migrate
+  test:
+    docker:
+      - image: circleci/ruby:2.3.3
+    executor: ruby/default
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - ruby/bundle-install
+      - run: RAILS_ENV=test bundle exec rake db:create
+      - run: RAILS_ENV=test bundle exec rake db:migrate
+      - run: RAILS_ENV=test bundle exec rspec
