@@ -5,7 +5,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: circleci/ruby:2.3.3-node
+      - image: circleci/ruby:2.3.8-stretch-node-browsers
         environment:
           POSTGRES_USER: postgres
           RAILS_ENV: test
@@ -13,6 +13,14 @@ jobs:
       - image: circleci/postgres:9.6-alpine
         environment:
           POSTGRES_USER: postgres
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+        environment:
+          cluster.name: transbucket-test
+          xpack.security.enabled: false
+          transport.host: localhost
+          network.host: 127.0.0.1
+          http.port: 9200
+          discovery.type: single-node
     executor: ruby/default
     steps:
       - checkout
@@ -23,6 +31,13 @@ jobs:
       - run:
           name: Wait for db
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Wait for elasticsearch
+          command: dockerize -wait tcp://localhost:9200 -timeout 1m
+      - run:
+          name: Lift elasticsearch disk watermark restrictions
+          command: |
+            curl -XPUT -H "Content-Type: application/json" http://localhost:9200/_cluster/settings -d '{ "transient": { "cluster.routing.allocation.disk.threshold_enabled": false } }'
       - run: bundle exec rake db:create
       - run: bundle exec rake db:migrate
       - run: bundle exec rspec
