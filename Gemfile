@@ -39,9 +39,15 @@ gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.
 # for managing environment variables
 gem 'figaro'
 
+# for i18n, pulls out header
+gem 'http_accept_language'
+gem 'rails-i18n', '~> 4.0'
+gem 'i18n_generators'
+
 # for authentication
 gem 'bcrypt', '~> 3.1.13'
 gem 'devise'
+gem 'devise-i18n'
 gem 'devise-encryptable'
 
 gem 'aasm'
@@ -78,6 +84,9 @@ gem 'font-awesome-rails'
 
 # TODO blocking ips, bots, etc
 # gem 'rack-attack'
+
+# in some environments we turn "down" logging
+gem 'lograge'
 
 group :development do
   gem 'brakeman', :require => false
@@ -138,5 +147,4 @@ group :production do
 	gem 'rails_12factor'
 	gem 'newrelic_rpm'
   gem 'scout_apm'
-  gem 'lograge'
 end

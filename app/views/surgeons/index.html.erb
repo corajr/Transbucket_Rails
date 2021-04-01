@@ -1,10 +1,11 @@
+<%= render partial: 'ads/test1' %>
 <% title "Surgeons" %>
 <div id="surgeons" style="background-color:#ffffff">
   <table class="table table-hover table-bordered" bgcolor="#ffffcc">
     <th>Name</th>
     <th>Submissions</th>
     <% @surgeons.each do |surgeon| %>
-    <%= render partial: 'surgeons/surgeon_row', locals: { surgeon: surgeon } %>
+    <%= render partial: 'surgeons/surgeon_row', locals: { surgeon: surgeon, pin_count: @pins_per_surgeon[surgeon.id] } %>
     <% end %>
   </table>
 </div>

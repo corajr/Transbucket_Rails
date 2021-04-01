@@ -29,7 +29,7 @@ class Surgeon < ActiveRecord::Base
   end
 
   def satisfaction_by_procedure
-    Pin.where(surgeon_id: self.id).where.not(satisfaction: 0).
+    Pin.where(surgeon_id: id).where.not(satisfaction: 0).
       group([:procedure_id]).average(:satisfaction)
   end
 
@@ -39,7 +39,7 @@ class Surgeon < ActiveRecord::Base
 
   def self.names
     pluck(:first_name, :last_name).
-      collect! {|e| e[0].nil? ? e[1] : e.reverse.join(',') }.
+      collect! {|e| e[0].nil? ? e[1] : e.reverse.join(', ') }.
       sort
   end
 end

@@ -1,10 +1,13 @@
 class SurgeonsController < ApplicationController
   def index
     @surgeons = Surgeon.all.order(:last_name)
+    @pins_per_surgeon = Surgeon.joins(:pins).group("pins.surgeon_id").count
   end
 
   def show
     @surgeon = Surgeon.friendly.find(params[:id])
+    # produces {[surgeon_id, procedure_id] => count }
+    @pins_by_surgeon_procedure = Pin.group(:surgeon_id, :procedure_id).count
   end
 
   def new

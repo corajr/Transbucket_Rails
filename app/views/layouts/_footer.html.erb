@@ -1,25 +1,10 @@
-<% if Rails.env.production? && !user_signed_in? %>
-<div class="row padded_nicely">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- test1 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-3154444439610781"
-     data-ad-slot="3311943876"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
-<% end %>
 <div class="footer navbar-fixed-bottom submission_well">
-<% cache(Date.today.year) do %>
-  <small> &nbsp;
-  <b><%= Date.today.year %></b> &copy; Transbucket.com |
-  <%= link_to 'About',  about_path %> |
-  <%= link_to 'Terms of Service', terms_path %> |
-  <%= link_to 'Privacy Policy', privacy_path %>
-  </small>
-<% end %>
+  <% cache("#{I18n.locale}_#{Date.today.year}") do %>
+    <small> &nbsp;
+      <b><%= Date.today.year %></b> - Transbucket.com |
+      <%= link_to I18n.t('.footer.about'),  about_path %> |
+      <%= link_to I18n.t('.footer.tos'), terms_path %> |
+      <%= link_to I18n.t('.footer.pp'), privacy_path %>
+    </small>
+  <% end %>
 </div>
